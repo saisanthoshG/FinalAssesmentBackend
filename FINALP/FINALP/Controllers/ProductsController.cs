@@ -1,4 +1,5 @@
 ﻿using FINALP.Products;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -9,19 +10,29 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FINALP.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        
-        private readonly ProductContext pc ;
-        public ProductsController()
+        private readonly ProductContext pc;
+        private readonly IJwtAuthenticationManager jwtAuthenticationManager;
+        public ProductsController(IJwtAuthenticationManager jwtAuthenticationManager)
         {
+            this.jwtAuthenticationManager = jwtAuthenticationManager;
             pc = new ProductContext();
         }
+        
+        //private object jwtAuthenticationManager;
+
+        //public ProductsController()
+        //{
+           
+        //}
         //private readonly ProductContext _context;
         ////private readonly IConfiguration _configuration;
 
@@ -110,6 +121,21 @@ namespace FINALP.Controllers
         //{
         //    throw new NotImplementedException();
         //}
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] UserCred userCred)
+        {
+            var token = jwtAuthenticationManager.Authenticate(userCred.Username, userCred.Password);
+            if (token == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok(token);
+            }
+        }
     }
 }
 
