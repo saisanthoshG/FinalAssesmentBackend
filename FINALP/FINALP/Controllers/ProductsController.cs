@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FINALP.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -85,7 +85,7 @@ namespace FINALP.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return new JsonResult(product);
         }
 
         [HttpPost]
@@ -121,7 +121,7 @@ namespace FINALP.Controllers
         //{
         //    throw new NotImplementedException();
         //}
-
+        
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] UserCred userCred)
@@ -136,6 +136,9 @@ namespace FINALP.Controllers
                 return Ok(token);
             }
         }
+
+
+      
     }
 }
 

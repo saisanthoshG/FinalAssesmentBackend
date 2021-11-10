@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace FINALP.Products
+namespace FINALP.SignUp
 {
     public partial class ProductContext : DbContext
     {
@@ -15,7 +15,8 @@ namespace FINALP.Products
         {
         }
 
-        public virtual DbSet<Product> Products{ get; set; }
+       // public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Userdetails> Userdetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,27 +29,42 @@ namespace FINALP.Products
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>(entity =>
+           
+
+            modelBuilder.Entity<Userdetails>(entity =>
             {
-                entity.ToTable("product");
+                entity.HasKey(e => e.Username)
+                    .HasName("PK__userdeta__F3DBC5735EE19E57");
 
-                entity.Property(e => e.ProductId).HasColumnName("product_id");
+                entity.ToTable("userdetails");
 
-                entity.Property(e => e.ProductDescription)
-                    .HasColumnName("product_description")
+                entity.Property(e => e.Username)
+                    .HasColumnName("username")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ProductExpiryDate)
-                    .HasColumnName("product_expiry_date")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.EmailAddress)
+                    .HasColumnName("email_address")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.ProductManufacturingDate)
-                    .HasColumnName("product_manufacturing_date")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.Firstname)
+                    .HasColumnName("firstname")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.ProductName)
-                    .HasColumnName("product_name")
+                entity.Property(e => e.Lastname)
+                    .HasColumnName("lastname")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PhoneNumber)
+                    .HasColumnName("phone_number")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Pwd)
+                    .HasColumnName("pwd")
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
